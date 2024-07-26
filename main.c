@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-void ler_Array(const char *nomeArquivo, int **arr, int *tamanho) {
+void lerArrayDoArquivo(const char *nomeArquivo, int **arr, int *tamanho) {
     FILE *file = fopen(nomeArquivo, "r");
     if (!file) {
         fprintf(stderr, "Não foi possível abrir o arquivo %s\n", nomeArquivo);
@@ -30,7 +30,7 @@ void ler_Array(const char *nomeArquivo, int **arr, int *tamanho) {
     fclose(file);
 }
 
-void print_Array(int arr[], int tamanho) {
+void printArray(int arr[], int tamanho) {
     for (int i = 0; i < tamanho; i++) {
         printf("%d ", arr[i]);
     }
@@ -63,33 +63,37 @@ void insertionSort(int arr[], int tamanho) {
     }
 }
 
-void testarAlgoritmo(void (*ordenacao_sort)(int*, int), const char *nomeAlgoritmo, const char *nomeArquivo) {
+void testarAlgoritmoOrdenacao(void (*funcaoOrdenacao)(int*, int), const char *nomeAlgoritmo, const char *nomeArquivo) {
     int *arr;
     int tamanho;
-    ler_Array(nomeArquivo, &arr, &tamanho);
+    lerArrayDoArquivo(nomeArquivo, &arr, &tamanho);
 
     clock_t inicio, fim;
-    double tempo;
+    double tempo_cpu;
 
     inicio = clock();
+    funcaoOrdenacao(arr, tamanho);
     fim = clock();
 
-    ordenacao_sort(arr, tamanho);
+    tempo_cpu = ((double) (fim - inicio)) / CLOCKS_PER_SEC;
+    printf("Tempo usado pelo %s no arquivo %s: %f segundos\n", nomeAlgoritmo, nomeArquivo, tempo_cpu);
 
-    tempo = ((double) (fim - inicio)) / CLOCKS_PER_SEC;
-
-    printf("Tempo usado pelo %s no arquivo %s: %f segundos\n", nomeAlgoritmo, nomeArquivo, tempo);
     printf("Array ordenado usando %s:\n", nomeAlgoritmo);
-    print_Array(arr, tamanho);
+    printArray(arr, tamanho);
 
     free(arr);
 }
 
-int main() {
-    const char *nomeArquivo = "num.1000.1.in";
+int main(int argc, char *argv[]) {
+    if (argc != 2) {
+        fprintf(stderr, "Uso: %s <nome do arquivo>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
 
-    testarAlgoritmo(selectionSort, "Selection Sort", nomeArquivo);
-    testarAlgoritmo(insertionSort, "Insertion Sort", nomeArquivo);
+    const char *nomeArquivo = argv[1];
+
+    testarAlgoritmoOrdenacao(selectionSort, "Selection Sort", nomeArquivo);
+    testarAlgoritmoOrdenacao(insertionSort, "Insertion Sort", nomeArquivo);
 
     return 0;
 }
