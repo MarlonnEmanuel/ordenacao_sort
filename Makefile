@@ -11,4 +11,8 @@ clean:
 	rm -f $(TARGET)
 
 run: $(TARGET)
-	./$(TARGET)
+	@echo "Uso: make run FILE=<nome do arquivo>"
+	@exit 1
+
+run-file: $(TARGET)
+	./$(TARGET) $(FILE)
