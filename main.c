@@ -11,7 +11,7 @@ void ler_Array(const char *nomeArquivo, int **arr, int *tamanho) {
 
     if (fscanf(file, "%d", tamanho) != 1) {
         fprintf(stderr, "Falha ao ler o tamanho do arquivo %s\n", nomeArquivo);
-        exit(EXIT_FAILURE);nomeArquivo
+        exit(EXIT_FAILURE);
     }
 
     *arr = (int *)malloc(*tamanho * sizeof(int));
