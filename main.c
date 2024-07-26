@@ -86,7 +86,7 @@ void testarAlgoritmo(void (*ordenacao_sort)(int*, int), const char *nomeAlgoritm
 }
 
 int main() {
-    const char *nomeArquivo = "arquivo";
+    const char *nomeArquivo = "num.1000.1.in";
 
     testarAlgoritmo(selectionSort, "Selection Sort", nomeArquivo);
     testarAlgoritmo(insertionSort, "Insertion Sort", nomeArquivo);
